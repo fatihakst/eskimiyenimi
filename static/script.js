@@ -1,4 +1,4 @@
-const API_URL = 'http://127.0.0.1:5000/yeni-olay-cifti';
+const API_URL = '/yeni-olay-cifti';
  const OYUN_SURESI = 15;
 
  // --- HTML ELEMENTLERİNİ SEÇME ---
