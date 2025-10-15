@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eski mi Yeni mi?</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="ana-menu" class="screen active">
+        <h1 class="game-title">Eski mi Yeni mi?</h1>
+        <div class="menu-buttons">
+            <button id="baslat-btn" class="menu-btn">Başlat</button>
+            <button id="liderlik-btn" class="menu-btn">Liderlik Tablosu</button>
+        </div>
+    </div>
+
+    <div id="oyun-ekrani" class="screen">
+        <div class="game-container">
+            <div class="score-board">Skor: <span id="skor">0</span></div>
+            <div class="timer-container">
+                <div class="timer-bar" id="zaman-cubugu"></div>
+            </div>
+            <div class="cards-container">
+                <div class="card" id="kart1">
+                    <h2 id="olay1-ad"></h2>
+                    <p class="tarih" id="olay1-yil"></p>
+                </div>
+                <div class="vs-divider">
+                    <div class="line"></div>
+                    <div class="vs-text">VS</div>
+                    <div class="line"></div>
+                </div>
+                <div class="card" id="kart2">
+                    <h2 id="olay2-ad"></h2>
+                    <p class="tarih" id="olay2-yil">?</p>
+                     <div class="buttons" id="tahmin-butonlari">
+                          <button class="choice-btn higher-btn">Daha Yeni</button>
+                          <button id="ayni-yil-btn" class="choice-btn same-btn">Aynı Yıl(x10)</button>
+                         <button class="choice-btn lower-btn">Daha Eski</button>
+          </div>
+                </div>
+            </div>
+            <div id="sonuc-mesaji" class="result-message"></div>
+        </div>
+        <div id="oyun-bitti" class="game-over-screen">
+    <h2 id="oyun-sonu-basligi">Oyun Bitti!</h2>
+    <p>Final Skorun: <span id="final-skor"></span></p>
+
+    <div id="skor-kayit-formu" class="score-form">
+        <input type="text" id="oyuncu-adi-input" placeholder="Adınızı Girin..." maxlength="15">
+        <button id="skoru-kaydet-btn" class="menu-btn">Skoru Kaydet</button>
+    </div>
+
+    <div class="oyun-sonu-butonlari">
+        <button id="tekrar-oyna-btn" class="menu-btn">Tekrar Oyna</button>
+        <button id="ana-menuye-don-btn-1" class="menu-btn secondary-btn">Ana Menü</button>
+    </div>
+</div>
+    </div>
+
+    <div id="liderlik-ekrani" class="screen">
+        <h1 class="game-title">Liderlik Tablosu</h1>
+        <div id="liderlik-listesi" class="leaderboard-list">
+            </div>
+        <button id="ana-menuye-don-btn-2" class="menu-btn">Geri Dön</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

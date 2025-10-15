@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap');
+ body{font-family:'Roboto Condensed',sans-serif;background-color:#1a1a2e;color:#e0e0e0;margin:0;overflow:hidden}
+ .screen{display:none;width:100%;height:100vh;flex-direction:column;justify-content:center;align-items:center;padding:1rem;box-sizing:border-box}
+ .screen.active{display:flex}
+ .game-title{font-size:clamp(3rem, 10vw, 5rem);color:#fca311;margin-bottom:2rem;text-shadow:3px 3px 6px rgba(0,0,0,0.6);text-align:center}
+ .menu-btn{padding:1rem 2rem;font-size:1.2rem;font-weight:700;border:none;border-radius:10px;cursor:pointer;transition:all 0.2s ease;text-transform:uppercase;margin:.5rem;background-color:#fca311;color:#1a1a2e;box-shadow:0 5px 15px rgba(0,0,0,0.3)}
+ .menu-btn:hover{transform:translateY(-5px);box-shadow:0 8px 20px rgba(0,0,0,0.4)}
+ .menu-buttons{display:flex;flex-direction:column}
+ .leaderboard-list{width:90%;max-width:500px;background-color:#16213e;border:2px solid #0f3460;border-radius:10px;padding:1rem;margin-bottom:2rem;max-height:50vh;overflow-y:auto;text-align:left}
+ .score-entry{display:flex;justify-content:space-between;padding:.8rem 1rem;font-size:1.2rem;border-bottom:1px solid #0f3460}
+ .score-entry:last-child{border-bottom:none}
+ .score-entry .rank{font-weight:700;color:#fca311;margin-right:1rem}
+ .score-entry .name{flex-grow:1}
+ .score-entry .score{font-weight:700}
+ .score-entry .placeholder{color:#888;text-align:center;width:100%}
+ .game-over-screen{display:none;flex-direction:column;justify-content:center;align-items:center;background-color:rgba(0,0,0,0.7);padding:2rem;border-radius:10px;width:90%;max-width:500px}
+ .game-over-screen p{font-size:1.5rem}
+ .victory-title{color:#fca311}
+ .score-form{display:flex;flex-direction:column;width:100%;max-width:350px;margin:1rem 0}
+ #oyuncu-adi-input{background-color:#16213e;border:2px solid #0f3460;color:white;padding:1rem;border-radius:8px;font-size:1.2rem;text-align:center;margin-bottom:1rem;outline:none;transition:border-color 0.3s}
+ #oyuncu-adi-input::placeholder{color:#aaa}
+ #oyuncu-adi-input:focus{border-color:#fca311}
+ .oyun-sonu-butonlari{display:flex;justify-content:center;width:100%;max-width:400px;margin-top:1rem}
+ .secondary-btn{background-color:transparent;color:#fca311;border:2px solid #fca311}
+ .game-container{width:100%;max-width:900px;text-align:center}
+ .score-board{font-size:2.5rem;font-weight:700;color:#fca311;margin-bottom:1rem;text-shadow:2px 2px 4px rgba(0,0,0,0.5)}
+ .timer-container{width:100%;height:12px;background-color:#0f3460;border-radius:6px;margin-bottom:2rem;overflow:hidden;box-shadow:inset 0 2px 4px rgba(0,0,0,0.4)}
+ .timer-bar{height:100%;width:100%;background:linear-gradient(90deg, #fca311, #e94560);border-radius:6px;transition:width 0.1s linear}
+ .cards-container{display:flex;justify-content:center;align-items:stretch;gap:1rem}
+
+ /* --- KART ANİMASYONLARI (FİNAL VERSİYON) --- */
+ .card {
+     background-color: #16213e; border: 2px solid #0f3460; border-radius: 12px; width: 45%; padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+     transition: transform 0.5s ease-in-out, opacity 0.4s ease-in-out;
+ }
+
+ .card.is-entering {
+     opacity: 0;
+     transform: translateY(20px);
+ }
+
+ .card.is-exiting-down {
+     opacity: 0;
+     transform: translateY(50px);
+ }
+
+ .card.is-exiting-left {
+     opacity: 0;
+     transform: translateX(-50%); /* Kendi yarısı kadar sola kayar, ortada kaybolur */
+ }
+ /* --- ANİMASYON BİTİŞ --- */
+
+ .card h2{font-size:1.8rem;margin:0 0 1rem 0;min-height:100px}
+ .card .tarih{font-size:3rem;font-weight:700;color:#e94560;margin:auto 0}
+ .vs-divider{display:flex;flex-direction:column;align-items:center;justify-content:center;width:50px}
+ .vs-divider .line{width:2px;height:40%;background-color:#fca311}
+ .vs-divider .vs-text{color:#fca311;font-weight:700;padding:10px 0}
+ .buttons{margin-top:2rem; display: flex; gap: 0.5rem;}
+ .choice-btn{width:100%;padding:1rem;font-size:1.2rem;font-weight:700;border:none;border-radius:8px;cursor:pointer;transition:all 0.2s ease;text-transform:uppercase;margin-bottom:.5rem; flex: 1;}
+ .higher-btn{background-color:#28a745;color:white}
+ .lower-btn{background-color:#dc3545;color:white}
+ .same-btn {background-color: #fca311; color: #1a1a2e;}
+ .choice-btn:hover{transform:translateY(-3px);box-shadow:0 5px 10px rgba(0,0,0,0.3)}
+ .result-message{margin-top:2rem;font-size:2rem;font-weight:700;height:40px}
