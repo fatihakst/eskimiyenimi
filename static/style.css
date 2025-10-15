@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap');
  body{font-family:'Roboto Condensed',sans-serif;background-color:#1a1a2e;color:#e0e0e0;margin:0;overflow:hidden}
- .screen{display:none;width:100%;height:100vh;flex-direction:column;justify-content:center;align-items:center;padding:1rem;box-sizing:border-box}
+ .screen{display:none;width:100%;height:100vh;flex-direction:column;justify-content:center;align-items:center;padding:1rem;box-sizing:border-box; overflow-y: auto;} /* Kaydırma eklendi */
  .screen.active{display:flex}
  .game-title{font-size:clamp(3rem, 10vw, 5rem);color:#fca311;margin-bottom:2rem;text-shadow:3px 3px 6px rgba(0,0,0,0.6);text-align:center}
  .menu-btn{padding:1rem 2rem;font-size:1.2rem;font-weight:700;border:none;border-radius:10px;cursor:pointer;transition:all 0.2s ease;text-transform:uppercase;margin:.5rem;background-color:#fca311;color:#1a1a2e;box-shadow:0 5px 15px rgba(0,0,0,0.3)}
@@ -27,29 +27,11 @@
  .timer-container{width:100%;height:12px;background-color:#0f3460;border-radius:6px;margin-bottom:2rem;overflow:hidden;box-shadow:inset 0 2px 4px rgba(0,0,0,0.4)}
  .timer-bar{height:100%;width:100%;background:linear-gradient(90deg, #fca311, #e94560);border-radius:6px;transition:width 0.1s linear}
  .cards-container{display:flex;justify-content:center;align-items:stretch;gap:1rem}
-
- /* --- KART ANİMASYONLARI (FİNAL VERSİYON) --- */
- .card {
-     background-color: #16213e; border: 2px solid #0f3460; border-radius: 12px; width: 45%; padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 10px 20px rgba(0,0,0,0.4);
-     transition: transform 0.5s ease-in-out, opacity 0.4s ease-in-out;
- }
-
- .card.is-entering {
-     opacity: 0;
-     transform: translateY(20px);
- }
-
- .card.is-exiting-down {
-     opacity: 0;
-     transform: translateY(50px);
- }
-
- .card.is-exiting-left {
-     opacity: 0;
-     transform: translateX(-50%); /* Kendi yarısı kadar sola kayar, ortada kaybolur */
- }
- /* --- ANİMASYON BİTİŞ --- */
-
+ .card { background-color: #16213e; border: 2px solid #0f3460; border-radius: 12px; width: 45%; padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 10px 20px rgba(0,0,0,0.4); transition: transform 0.5s ease-in-out, opacity 0.4s ease-in-out; }
+ .card.is-hidden { opacity: 0; pointer-events: none; }
+ .card.is-entering { opacity: 0; transform: translateY(20px); }
+ .card.is-exiting-down { opacity: 0; transform: translateY(50px); }
+ .card.is-exiting-left { transform: translateX(calc(-100% - 1rem)); }
  .card h2{font-size:1.8rem;margin:0 0 1rem 0;min-height:100px}
  .card .tarih{font-size:3rem;font-weight:700;color:#e94560;margin:auto 0}
  .vs-divider{display:flex;flex-direction:column;align-items:center;justify-content:center;width:50px}
@@ -62,3 +44,33 @@
  .same-btn {background-color: #fca311; color: #1a1a2e;}
  .choice-btn:hover{transform:translateY(-3px);box-shadow:0 5px 10px rgba(0,0,0,0.3)}
  .result-message{margin-top:2rem;font-size:2rem;font-weight:700;height:40px}
+
+ /* --- MOBİL UYUMLULUK (RESPONSIVE DESIGN) --- */
+ /* Bu kurallar sadece ekran genişliği 768px veya daha az olduğunda geçerli olur */
+ @media (max-width: 768px) {
+     .cards-container {
+         flex-direction: column; /* Kartları alt alta diz */
+         align-items: center;    /* Ortala */
+     }
+     .card {
+         width: 90%; /* Kartların genişliğini artır */
+     }
+     .vs-divider {
+         transform: rotate(90deg); /* 'VS' ayıracını 90 derece döndür */
+         margin: 1rem 0;
+     }
+     .card h2 {
+         font-size: 1.5rem;
+         min-height: 80px;
+     }
+     .card .tarih {
+         font-size: 2.5rem;
+     }
+     .menu-btn {
+         padding: 0.8rem 1.5rem;
+         font-size: 1.2rem;
+     }
+     .game-title {
+         font-size: 2.5rem;
+     }
+ }
