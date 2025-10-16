@@ -82,6 +82,7 @@ def yeni_olay_cifti_getir():
         olay2 = random.choices(aday_olaylar, weights=agirliklar, k=1)[0]
     except Exception:
         # --- BURASI DÜZELTİLDİ ---
+        # Yeni rakibi 'kullanilabilir_olaylar' listesinden seçiyoruz.
         aday_olaylar = [o for o in kullanilabilir_olaylar if o['id'] != olay1['id']]
         if not aday_olaylar: return jsonify({"hata": "Rakip yok"}), 400
         olay2 = random.choice(aday_olaylar)
@@ -91,21 +92,28 @@ def yeni_olay_cifti_getir():
 
 @app.route('/get-leaderboard', methods=['GET'])
 def get_leaderboard():
-    scores = Score.query.order_by(Score.score.desc()).limit(100).all()
-    leaderboard = [{"name": score.name, "score": score.score} for score in scores]
-    return jsonify(leaderboard)
+    # Veritabanı okuma işlemini de bir try-except bloğuna alalım, ne olur ne olmaz.
+    try:
+        scores = Score.query.order_by(Score.score.desc()).limit(100).all()
+        leaderboard = [{"name": score.name, "score": score.score} for score in scores]
+        return jsonify(leaderboard)
+    except Exception as e:
+        return jsonify([])  # Hata olursa boş liste döndür
 
 
 @app.route('/add-score', methods=['POST'])
 def add_score():
-    data = request.get_json();
-    name = data.get('name');
-    score = data.get('score')
-    if not name or score is None: return jsonify({"hata": "İsim ve skor gerekli"}), 400
-    new_score = Score(name=name, score=score)
-    db.session.add(new_score);
-    db.session.commit()
-    return jsonify({"mesaj": "Skor eklendi"}), 201
+    try:
+        data = request.get_json();
+        name = data.get('name');
+        score = data.get('score')
+        if not name or score is None: return jsonify({"hata": "İsim ve skor gerekli"}), 400
+        new_score = Score(name=name, score=score)
+        db.session.add(new_score);
+        db.session.commit()
+        return jsonify({"mesaj": "Skor eklendi"}), 201
+    except Exception as e:
+        return jsonify({"hata": str(e)}), 500
 
 
 with app.app_context():
