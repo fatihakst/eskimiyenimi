@@ -24,7 +24,6 @@ class Score(db.Model):
 
 
 # --- OYUN AYARLARI ---
-YAKINLIK_FAKTORU = 50
 AYNI_YIL_IHTIMALI = 0.125
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -53,52 +52,52 @@ def serve_static(path): return send_from_directory(app.static_folder, path)
 
 @app.route('/yeni-olay-cifti', methods=['POST'])
 def yeni_olay_cifti_getir():
-    gelen_veri = request.get_json()
-    kullanilmis_idler = set(gelen_veri.get('kullanilmis_idler', []))
-    sabit_olay = gelen_veri.get('sabit_olay', None)
-    kullanilabilir_olaylar = [olay for olay in TUM_OLAYLAR if olay['id'] not in kullanilmis_idler]
-
-    if (len(kullanilabilir_olaylar) < 2 and not sabit_olay) or (len(kullanilabilir_olaylar) < 1 and sabit_olay):
-        return jsonify({"hata": "Tebrikler!"}), 400
-
-    if not sabit_olay and random.random() < AYNI_YIL_IHTIMALI:
-        uygun_yillar = [yil for yil, olaylar in YILLARA_GORE_OLAYLAR.items() if
-                        len([o for o in olaylar if o['id'] not in kullanilmis_idler]) >= 2]
-        if uygun_yillar:
-            secilen_yil = random.choice(uygun_yillar)
-            uygun_olaylar = [o for o in YILLARA_GORE_OLAYLAR[secilen_yil] if o['id'] not in kullanilmis_idler]
-            olay1, olay2 = random.sample(uygun_olaylar, 2)
-            return jsonify({"olay1": olay1, "olay2": olay2})
-
-    if sabit_olay:
-        olay1 = sabit_olay
-    else:
-        olay1 = random.choice(kullanilabilir_olaylar)
-
     try:
-        aday_olaylar = [o for o in kullanilabilir_olaylar if o['id'] != olay1['id'] and o['yil'] != olay1['yil']]
-        if not aday_olaylar: raise ValueError("Aday bulunamadı.")
-        agirliklar = [1 / (abs(aday['yil'] - olay1['yil']) + YAKINLIK_FAKTORU) for aday in aday_olaylar]
-        olay2 = random.choices(aday_olaylar, weights=agirliklar, k=1)[0]
-    except Exception:
-        # --- BURASI DÜZELTİLDİ ---
-        # Yeni rakibi 'kullanilabilir_olaylar' listesinden seçiyoruz.
+        gelen_veri = request.get_json()
+        kullanilmis_idler = set(gelen_veri.get('kullanilmis_idler', []))
+        sabit_olay = gelen_veri.get('sabit_olay', None)
+        kullanilabilir_olaylar = [olay for olay in TUM_OLAYLAR if olay['id'] not in kullanilmis_idler]
+
+        if (len(kullanilabilir_olaylar) < 2 and not sabit_olay) or (len(kullanilabilir_olaylar) < 1 and sabit_olay):
+            return jsonify({"hata": "Tebrikler!"}), 400
+
+        if not sabit_olay and random.random() < AYNI_YIL_IHTIMALI:
+            uygun_yillar = [yil for yil, olaylar in YILLARA_GORE_OLAYLAR.items() if
+                            len([o for o in olaylar if o['id'] not in kullanilmis_idler]) >= 2]
+            if uygun_yillar:
+                secilen_yil = random.choice(uygun_yillar)
+                uygun_olaylar = [o for o in YILLARA_GORE_OLAYLAR[secilen_yil] if o['id'] not in kullanilmis_idler]
+                olay1, olay2 = random.sample(uygun_olaylar, 2)
+                return jsonify({"olay1": olay1, "olay2": olay2})
+
+        # --- BASİTLEŞTİRİLMİŞ VE %100 GÜVENİLİR SEÇİM MANTIĞI ---
+        if sabit_olay:
+            olay1 = sabit_olay
+        else:
+            olay1 = random.choice(kullanilabilir_olaylar)
+
         aday_olaylar = [o for o in kullanilabilir_olaylar if o['id'] != olay1['id']]
-        if not aday_olaylar: return jsonify({"hata": "Rakip yok"}), 400
+        if not aday_olaylar:
+            return jsonify({"hata": "Rakip yok"}), 400
+
         olay2 = random.choice(aday_olaylar)
 
-    return jsonify({"olay1": olay1, "olay2": olay2})
+        return jsonify({"olay1": olay1, "olay2": olay2})
+    except Exception as e:
+        # Eğer yine de bir hata olursa, loglara yazdır ve hata mesajı döndür
+        print(f"BEKLENMEDİK HATA: {e}")
+        return jsonify({"hata": "Sunucuda beklenmedik bir hata oluştu."}), 500
 
 
 @app.route('/get-leaderboard', methods=['GET'])
 def get_leaderboard():
-    # Veritabanı okuma işlemini de bir try-except bloğuna alalım, ne olur ne olmaz.
     try:
         scores = Score.query.order_by(Score.score.desc()).limit(100).all()
         leaderboard = [{"name": score.name, "score": score.score} for score in scores]
         return jsonify(leaderboard)
     except Exception as e:
-        return jsonify([])  # Hata olursa boş liste döndür
+        print(f"Liderlik tablosu hatası: {e}")
+        return jsonify([])
 
 
 @app.route('/add-score', methods=['POST'])
@@ -113,6 +112,7 @@ def add_score():
         db.session.commit()
         return jsonify({"mesaj": "Skor eklendi"}), 201
     except Exception as e:
+        print(f"Skor ekleme hatası: {e}")
         return jsonify({"hata": str(e)}), 500
 
 
