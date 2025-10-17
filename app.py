@@ -11,7 +11,7 @@ CORS(app)
 
 # --- OYUN AYARLARI ---
 YAKINLIK_FAKTORU = 50
-AYNI_YIL_IHTIMALI = 0.125
+AYNI_YIL_IHTIMALI = 0.16
 
 
 def verileri_yukle():
