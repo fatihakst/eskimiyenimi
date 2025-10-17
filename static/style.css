@@ -26,18 +26,19 @@
  .score-board{font-size:2.5rem;font-weight:700;color:#fca311;margin-bottom:1rem;text-shadow:2px 2px 4px rgba(0,0,0,0.5)}
  .timer-container{width:100%;height:12px;background-color:#0f3460;border-radius:6px;margin-bottom:2rem;overflow:hidden;box-shadow:inset 0 2px 4px rgba(0,0,0,0.4)}
  .timer-bar{height:100%;width:100%;background:linear-gradient(90deg, #fca311, #e94560);border-radius:6px;transition:width 0.1s linear}
- .cards-container{display:flex;justify-content:center;align-items:stretch;gap:1rem}
 
- /* --- KART ANİMASYONLARI (FİNAL VERSİYON) --- */
- .card {
-     background-color: #16213e; border: 2px solid #0f3460; border-radius: 12px; width: 45%; padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 10px 20px rgba(0,0,0,0.4);
-     transition: transform 0.5s ease-in-out, opacity 0.4s ease-in-out;
+ /* --- KARTLAR & ANİMASYON (GÜVENİLİR VERSİYON) --- */
+ .cards-container {
+     display: flex;
+     justify-content: center;
+     align-items: stretch;
+     gap: 1rem;
+     transition: opacity 0.3s ease-in-out; /* Kartların genel alanı için solma efekti */
  }
- .card.is-hidden { opacity: 0; transform: scale(0.95); pointer-events: none; }
- .card.is-exiting-down { opacity: 0; transform: translateY(50px); }
- .card.is-exiting-left { transform: translateX(calc(-100% - 1rem)); }
- /* --- ANİMASYON BİTİŞ --- */
-
+ .cards-container.is-hidden {
+     opacity: 0;
+ }
+ .card { background-color: #16213e; border: 2px solid #0f3460; border-radius: 12px; width: 45%; padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 10px 20px rgba(0,0,0,0.4); }
  .card h2{font-size:1.8rem;margin:0 0 1rem 0;min-height:100px}
  .card .tarih{font-size:3rem;font-weight:700;color:#e94560;margin:auto 0}
  .vs-divider{display:flex;flex-direction:column;align-items:center;justify-content:center;width:50px}
