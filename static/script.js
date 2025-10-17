@@ -53,6 +53,16 @@ const API_URL = '/yeni-olay-cifti';
 
  async function yeniCiftGetir(isFirstRound = false) {
      isProcessing = true;
+
+     // 1. ADIM: KARTLARI GİZLE (ÇIKIŞ ANİMASYONU)
+     if (!isFirstRound) {
+         kart1El.classList.add('is-exiting-down');
+         kart2El.classList.add('is-exiting-left');
+     } else {
+         kart1El.classList.add('is-hidden');
+         kart2El.classList.add('is-hidden');
+     }
+
      let requestBody = { kullanilmis_idler: kullanilmis_idler, sabit_olay: sabitOlay };
      const response = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(requestBody) });
      const data = await response.json();
@@ -61,29 +71,30 @@ const API_URL = '/yeni-olay-cifti';
      olay1 = data.olay1;
      olay2 = data.olay2;
 
-     // Animasyon bittikten sonra veriyi yerleştir
-     setTimeout(ekranaYerlestir, isFirstRound ? 50 : 500);
+     // 2. ADIM: VERİYİ YERLEŞTİR (KARTLAR GÖRÜNMEZKEN)
+     // Animasyonun bitmesini bekle
+     setTimeout(() => {
+         ekranaYerlestir();
+     }, isFirstRound ? 50 : 500);
  }
 
  function ekranaYerlestir() {
      kullanilmis_idler.push(olay1.id);
+
+     // Verileri Yükle
      olay1AdEl.textContent = olay1.olay;
      olay1YilEl.textContent = formatYil(olay1.yil);
      olay2AdEl.textContent = olay2.olay;
      olay2YilEl.textContent = '?';
      olay2YilEl.style.color = '#e94560';
      sonucMesajiEl.textContent = '';
+     tahminButonlariEl.style.display = 'flex';
 
-     // Kartların animasyon sınıflarını temizle ve giriş animasyonuna hazırla
-     kart1El.className = 'card is-entering';
-     kart2El.className = 'card is-entering';
+     // Kartların animasyon sınıflarını temizle
+     kart1El.className = 'card';
+     kart2El.className = 'card';
 
-     // Çok kısa bir gecikmeyle giriş animasyonunu tetikle
-     setTimeout(() => {
-         kart1El.classList.remove('is-entering');
-         kart2El.classList.remove('is-entering');
-         zamanlayiciyiBaslat();
-     }, 50);
+     zamanlayiciyiBaslat();
  }
 
  function zamanlayiciyiBaslat() {
@@ -112,6 +123,7 @@ const API_URL = '/yeni-olay-cifti';
          sabitOlay = tahmin === "ayni" ? null : olay2;
          kullanilmis_idler.push(olay2.id);
 
+         // Sonucu gösterdikten sonra yeni turu başlat
          setTimeout(() => {
              yeniCiftGetir(false);
          }, 1500);

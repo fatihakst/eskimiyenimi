@@ -33,7 +33,7 @@
      background-color: #16213e; border: 2px solid #0f3460; border-radius: 12px; width: 45%; padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 10px 20px rgba(0,0,0,0.4);
      transition: transform 0.5s ease-in-out, opacity 0.4s ease-in-out;
  }
- .card.is-entering { opacity: 0; transform: translateY(20px); }
+ .card.is-hidden { opacity: 0; transform: scale(0.95); pointer-events: none; }
  .card.is-exiting-down { opacity: 0; transform: translateY(50px); }
  .card.is-exiting-left { transform: translateX(calc(-100% - 1rem)); }
  /* --- ANİMASYON BİTİŞ --- */
