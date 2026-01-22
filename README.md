@@ -13,5 +13,5 @@ A simple full-stack web game to guess the chronological order of historical even
 - Bonus: 10x points for "Same Year" guesses.
 - Dynamic Difficulty: Adjustable proximity factor in backend.
 
-💻 Play Now
+💻 Play Now (This might take some time to load)
 https://eski-mi-yeni-mi.onrender.com/
